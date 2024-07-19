@@ -79,11 +79,22 @@ class SDCPHandler:
 
         return self._responses[expected_topic][0]
 
+    def enable_video_stream(self):
+        expected_topic = f"sdcp/response/{self.mainboard_id}"
+        del self._responses[expected_topic]
+        self._request(386, {"Enable": 1})
+
+        while expected_topic not in self._responses:
+            time.sleep(0.1)
+
+        return self._responses[expected_topic][-1]
+
 
 def main():
     #websocket.enableTrace(True)
     handler = SDCPHandler(os.environ["SDCP_PRINTER_IP"], os.environ["SDCP_MAINBOARD_ID"])
     pprint(handler.get_status())
+    pprint(handler.enable_video_stream())
     handler.close()
 
 
