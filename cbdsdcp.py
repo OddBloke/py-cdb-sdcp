@@ -94,7 +94,7 @@ def main():
     #websocket.enableTrace(True)
     handler = SDCPHandler(os.environ["SDCP_PRINTER_IP"], os.environ["SDCP_MAINBOARD_ID"])
     pprint(handler.get_status())
-    pprint(handler.enable_video_stream())
+    #pprint(handler.enable_video_stream())
     handler.close()
 
 
