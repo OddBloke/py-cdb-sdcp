@@ -1,5 +1,11 @@
 from dataclasses import dataclass
+from enum import Enum
 from typing import Any, Dict, List
+
+
+class NetworkStatus(Enum):
+    WLAN = "wlan"
+    ETH = "eth"
 
 
 @dataclass
@@ -15,21 +21,29 @@ class PrinterAttributes:
     MaximumCloudSDCPSercicesAllowed: int
     MaximumVideoStreamAllowed: int
     Name: str
-    NetworkStatus: str  # TODO: Enum wlan|eth
+    NetworkStatus: NetworkStatus
     NumberOfCloudSDCPServicesConnected: int
     NumberOfVideoStreamConnected: int
     ProtocolVersion: str
     ReleaseFilmMax: int
     RemainingMemory: int
-    Resolution: str  # TODO: tuple?
+    Resolution: tuple
     SDCPStatus: int  # undocumented
     SupportFileType: List[str]
     TLPInterLayers: int
     TLPNoCapPos: int
     TLPStartCapPos: int
     UsbDiskStatus: int
-    XYZsize: str  # TODO: tuple?
+    XYZsize: tuple
 
     @classmethod
     def from_json(cls, payload: Dict[str, Any]) -> "PrinterAttributes":
-        return cls(**payload)
+        network_status = NetworkStatus(payload.pop("NetworkStatus"))
+        resolution = tuple(payload.pop("Resolution").split("x"))
+        xyz_size = tuple(payload.pop("XYZsize").split("x"))
+        return cls(
+            NetworkStatus=network_status,
+            Resolution=resolution,
+            XYZsize=xyz_size,
+            **payload
+        )
