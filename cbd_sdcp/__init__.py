@@ -4,6 +4,7 @@ from typing import Any, Dict, Optional
 
 from websockets.sync import client
 
+from .attributes import PrinterAttributes
 from .status import PrinterStatus
 
 
@@ -63,7 +64,9 @@ class Printer:
 
     def get_attributes(self):
         self._request(1)
-        return self._recv(f"sdcp/attributes/{self.mainboard_id}")
+        return PrinterAttributes.from_json(
+            self._recv(f"sdcp/attributes/{self.mainboard_id}")["Attributes"]
+        )
 
     def enable_video_stream(self):
         return self._request(386, {"Enable": 1})
