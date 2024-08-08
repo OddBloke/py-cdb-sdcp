@@ -17,17 +17,17 @@ class PrintError(Enum):
 class PrintStatus(Enum):
     # Names and values from sdcp_print_status_t in
     # https://github.com/cbd-tech/SDCP-Smart-Device-Control-Protocol-V3.0.0/blob/main/SDCP%28Smart%20Device%20Control%20Protocol%29_V3.0.0_EN.md#status
-    IDLE = 0
-    HOMING = 1
-    DROPPING = 2
-    EXPOSURING = 3
-    LIFTING = 4
-    PAUSING = 5
-    PAUSED = 6
-    STOPPING = 7
-    STOPPED = 8
-    COMPLETE = 9
-    FILE_CHECKING = 10
+    IDLE = 0  # Idle
+    HOMING = 1  # Resetting
+    DROPPING = 2  # Descending
+    EXPOSURING = 3  # Exposing
+    LIFTING = 4  # Lifting
+    PAUSING = 5  # Executing Pause Action
+    PAUSED = 6  # Suspended
+    STOPPING = 7  # Executing Stop Action
+    STOPED = 8  # Stopped
+    COMPLETE = 9  # Print Completed
+    FILE_CHECKING = 10  # File Checking in Progress
 
 
 @dataclass
@@ -51,11 +51,11 @@ class PrintInfo:
 class MachineStatus(Enum):
     # Names and values from sdcp_machine_status_t in
     # https://github.com/cbd-tech/SDCP-Smart-Device-Control-Protocol-V3.0.0/blob/main/SDCP%28Smart%20Device%20Control%20Protocol%29_V3.0.0_EN.md#differences-between-top-level-status-changes-and-sub-statuses
-    IDLE = 0
-    PRINTING = 1
-    FILE_TRANSFERRING = 2
-    EXPOSURE_TESTING = 3
-    DEVICES_TESTING = 4
+    IDLE = 0  # Idle
+    PRINTING = 1  # Executing print task
+    FILE_TRANSFERRING = 2  # File transfer in progress
+    EXPOSURE_TESTING = 3  # Exposure test in progress
+    DEVICES_TESTING = 4  # Device self-check in progress
 
 
 @dataclass
