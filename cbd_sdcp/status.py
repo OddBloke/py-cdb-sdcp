@@ -3,6 +3,17 @@ from dataclasses import dataclass
 from typing import Any, Dict, List
 
 
+class PrintError(Enum):
+    # Names and values from sdcp_print_error_t in
+    # https://github.com/cbd-tech/SDCP-Smart-Device-Control-Protocol-V3.0.0/blob/main/SDCP%28Smart%20Device%20Control%20Protocol%29_V3.0.0_EN.md#errornumber
+    NONE = 0  # Normal
+    CHECK = 1  # File MD5 Check Failed
+    FILEIO = 2  # File Read Failed
+    INVLAID_RESOLUTION = 3  # Resolution Mismatch
+    UNKNOWN_FORMAT = 4  # Format Mismatch
+    UNKNOWN_MODEL = 5  # Machine Model Mismatch
+
+
 class PrintStatus(Enum):
     # Names and values from sdcp_print_status_t in
     # https://github.com/cbd-tech/SDCP-Smart-Device-Control-Protocol-V3.0.0/blob/main/SDCP%28Smart%20Device%20Control%20Protocol%29_V3.0.0_EN.md#status
@@ -26,14 +37,15 @@ class PrintInfo:
     TotalLayer: int
     CurrentTicks: int
     TotalTicks: int
-    ErrorNumber: int
+    ErrorNumber: PrintError
     Filename: str
     TaskId: str
 
     @classmethod
     def from_json(cls, payload: Dict[str, Any]) -> "PrintInfo":
+        error = PrintError(payload.pop("ErrorNumber"))
         status = PrintStatus(payload.pop("Status"))
-        return cls(Status=status, **payload)
+        return cls(ErrorNumber=error, Status=status, **payload)
 
 
 class MachineStatus(Enum):
