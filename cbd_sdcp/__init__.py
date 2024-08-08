@@ -73,3 +73,6 @@ class Printer:
 
     def disable_video_stream(self):
         return self._request(386, {"Enable": 0})
+
+    def retrieve_historical_tasks(self):
+        return self._request(320)["Data"]["Data"]["HistoryData"]
