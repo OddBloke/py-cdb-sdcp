@@ -56,6 +56,9 @@ class Printer:
             if self._non_response_callback is not None:
                 self._non_response_callback(msg)
 
+    def recv_forever(self) -> None:
+        self._recv(None)
+
     def get_status(self):
         self._request(0)
         return PrinterStatus.from_json(
