@@ -6,6 +6,9 @@ from cbd_sdcp.status import PrinterStatus
 
 
 def callback(msg):
+    if 'Status' not in msg:
+        print(datetime.datetime.now().isoformat(), msg)
+        return
     status = PrinterStatus.from_json(msg['Status'])
     print(datetime.datetime.now().isoformat(), status.CurrentStatus[0], f"{status.PrintInfo.CurrentLayer}/{status.PrintInfo.TotalLayer}", status.PrintInfo.Status)
 
